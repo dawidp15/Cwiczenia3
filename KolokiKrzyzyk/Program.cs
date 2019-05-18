@@ -10,10 +10,13 @@ namespace KolokiKrzyzyk
     {
         static void Main(string[] args)
         {
-            string imieGraczaA = "";
-            string imieGraczaB = "";
-            char znakGraczaA = 'x';
-            char znakGraczaB = 'o';
+            GraczLudzki gA = new GraczLudzki();
+            GraczKomputerowy gB = new GraczKomputerowy();
+            gA.Imie = "Uzytkownik";
+            gB.Imie = "Komputer";
+            gA.Znak = 'x';
+            gB.Znak = 'o';
+
             char[,] plansza = new char[3, 3]
             {
                 { '1', '2', '3' },
@@ -21,17 +24,26 @@ namespace KolokiKrzyzyk
                 { '7', '8', '9' }
             };
 
-            Console.Write("Wpisz imie gracza A: ");
-            imieGraczaA = Console.ReadLine();
-            Console.Write("Wpisz imie gracza B: ");
-            imieGraczaB = Console.ReadLine();
-
             //Petla na kolejne ruchy graczy
             bool koniecGry = false;
+            bool ruchGraczaA = true;
             while (!koniecGry)
             {
                 Console.Clear();
                 RysujPlansze(plansza);
+
+                if (ruchGraczaA)
+                {
+                    Console.WriteLine("Ruch wykonuje: " + gA.Imie);
+                    koniecGry = gA.WykonajRuch(plansza);
+                    ruchGraczaA = false;
+                }
+                else
+                {
+                    Console.WriteLine("Ruch wykonuje: " + gB.Imie);
+                    koniecGry = gB.WykonajRuch(plansza);
+                    ruchGraczaA = true;
+                }
 
                 Console.ReadKey();
             }
@@ -54,6 +66,33 @@ namespace KolokiKrzyzyk
                 Console.WriteLine();
 
             }
+        }
+    }
+
+    interface IRuch
+    {
+        bool WykonajRuch(char[,] plansza);
+    }
+
+    abstract class Gracz
+    {
+        public string Imie { get; set; }
+        public char Znak { get; set; }
+    }
+
+    class GraczLudzki : Gracz, IRuch
+    {
+        public bool WykonajRuch(char[,] plansza)
+        {
+            return false; //Do poprawienia
+        }
+    }
+
+    class GraczKomputerowy : Gracz, IRuch
+    {
+        public bool WykonajRuch(char[,] plansza)
+        {
+            return false; //Do poprawienia
         }
     }
 }
